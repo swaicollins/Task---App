@@ -231,7 +231,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Text(
                         "Already have an account?",
                         style: TextStyle(
-                          color: ColorConstant.green50,
+                          color: ColorConstant.teal800,
                           fontSize: getFontSize(17),
                           fontFamily: 'SF Pro Text',
                           fontWeight: FontWeight.w400,
