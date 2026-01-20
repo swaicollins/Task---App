@@ -47,28 +47,86 @@ class _LoginScreenState extends State<LoginScreen> {
     final double textFieldWidth = screenWidth * 0.9;
     final double textFieldHeight = screenHeight * 0.1;
 
+    // InputDecoration textFieldDecoration(String label) {
+    //   return InputDecoration(
+    //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+    //     enabledBorder: OutlineInputBorder(
+    //       borderSide: BorderSide(width: 1, color: ColorConstant.plainGrey),
+    //     ),
+    //     errorBorder: OutlineInputBorder(
+    //       borderSide: BorderSide(width: 1, color: Colors.red),
+    //     ),
+    //     focusedBorder: OutlineInputBorder(
+    //       borderSide: BorderSide(width: 1, color: ColorConstant.teal800),
+    //     ),
+    //     label: Text(label),
+    //     contentPadding: EdgeInsets.fromLTRB(14.0, 1.0, 4.0, 2.0),
+    //     labelStyle: AppStyle.txtInterMedium18.copyWith(
+    //       letterSpacing: 0.50,
+    //       height: 1.00,
+    //     ),
+    //     filled: true,
+    //     fillColor: ColorConstant.whiteA700,
+    //   );
+    // }
+
     InputDecoration textFieldDecoration(String label) {
+      final borderRadius = BorderRadius.circular(8);
+
       return InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: ColorConstant.plainGrey),
+        labelText: label,
+
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14.0,
+          vertical: 12.0,
         ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: Colors.red),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: ColorConstant.teal800),
-        ),
-        label: Text(label),
-        contentPadding: EdgeInsets.fromLTRB(14.0, 1.0, 4.0, 2.0),
+
         labelStyle: AppStyle.txtInterMedium18.copyWith(
-          letterSpacing: 0.50,
-          height: 1.00,
+          letterSpacing: 0.5,
+          height: 1.2,
         ),
+
         filled: true,
         fillColor: ColorConstant.whiteA700,
+
+        border: OutlineInputBorder(
+          borderRadius: borderRadius,
+        ),
+
+        enabledBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(
+            width: 1,
+            color: ColorConstant.plainGrey,
+          ),
+        ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(
+            width: 1.5,
+            color: ColorConstant.teal800,
+          ),
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: const BorderSide(
+            width: 1,
+            color: Colors.red,
+          ),
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: const BorderSide(
+            width: 1.5,
+            color: Colors.red,
+          ),
+        ),
       );
     }
+
 
     final nameField = TextFormField(
       controller: nameController,
@@ -107,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
       textAlignVertical: TextAlignVertical.center,
       keyboardType: TextInputType.visiblePassword,
       validator: (value) {
-        if (value!.isEmpty) {
+        if (value == null || value.isEmpty) {
           return "Password is required.";
         } else if (value.length < 6) {
           return "Password must be at least 6 characters.";
@@ -116,7 +174,6 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       obscureText: _isHidden,
       decoration: textFieldDecoration("Password").copyWith(
-        errorText: _errorMessage,
         suffixIcon: IconButton(
           icon: Icon(
             _isHidden ? Icons.visibility : Icons.visibility_off,
@@ -126,6 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+
 
     final loginButton = Material(
       child: MaterialButton(
@@ -187,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //     });
         //   }
         // },
-        child: Text("Sign Up", style: const TextStyle(color: Colors.white)),
+          child: Text("Login", style: const TextStyle(color: Colors.white)),
       ),
     );
 

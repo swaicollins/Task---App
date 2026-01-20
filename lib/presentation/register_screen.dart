@@ -97,7 +97,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       obscureText: _isHidden,
       decoration: textFieldDecoration("Password").copyWith(
-        errorText: _errorMessage,
         suffixIcon: IconButton(
           icon: Icon(
             _isHidden ? Icons.visibility : Icons.visibility_off,
