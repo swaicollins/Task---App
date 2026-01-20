@@ -47,28 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final double textFieldWidth = screenWidth * 0.9;
     final double textFieldHeight = screenHeight * 0.1;
 
-    // InputDecoration textFieldDecoration(String label) {
-    //   return InputDecoration(
-    //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-    //     enabledBorder: OutlineInputBorder(
-    //       borderSide: BorderSide(width: 1, color: ColorConstant.plainGrey),
-    //     ),
-    //     errorBorder: OutlineInputBorder(
-    //       borderSide: BorderSide(width: 1, color: Colors.red),
-    //     ),
-    //     focusedBorder: OutlineInputBorder(
-    //       borderSide: BorderSide(width: 1, color: ColorConstant.teal800),
-    //     ),
-    //     label: Text(label),
-    //     contentPadding: EdgeInsets.fromLTRB(14.0, 1.0, 4.0, 2.0),
-    //     labelStyle: AppStyle.txtInterMedium18.copyWith(
-    //       letterSpacing: 0.50,
-    //       height: 1.00,
-    //     ),
-    //     filled: true,
-    //     fillColor: ColorConstant.whiteA700,
-    //   );
-    // }
 
     InputDecoration textFieldDecoration(String label) {
       final borderRadius = BorderRadius.circular(8);
