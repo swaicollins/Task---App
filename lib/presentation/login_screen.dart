@@ -8,6 +8,7 @@ import '../data/sharedPreference/shared_preference_helper.dart';
 import '../themes/app_style.dart';
 import '../themes/color_constant.dart';
 import '../themes/size_utils.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -163,69 +164,60 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
 
-    final loginButton = Material(
-      child: MaterialButton(
-        color: ColorConstant.teal800,
-        shape: StadiumBorder(),
-        minWidth: 350,
+    final login = Container(
+      child: ElevatedButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             setState(() {
               isLoading = true;
             });
+
             var login = LoginRequest(
               username: nameController.text.toString().trim(),
               password: passwordController.text.toString().trim(),
             );
-            service
-                .loginUser(login)
-                .then((value) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("User logged in successfully"),
-                    ),
-                  );
-                })
-                .onError((error, stackTrace) {
-                  showMessage("Incorrect Credentials");
-                  setState(() {
-                    isLoading = false;
-                  });
-                });
+
+            try {
+              final value = await service.loginUser(login);
+
+              saveUserOffline(value);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                  ),
+                ),
+              );
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("User logged in successfully")),
+              );
+            } catch (error) {
+              showMessage("Incorrect Credentials");
+            } finally {
+              setState(() {
+                isLoading = false;
+              });
+            }
           }
         },
-
-        // onPressed: () async {
-        //   if (_formKey.currentState!.validate()) {
-        //     setState(() {
-        //       isLoading = true;
-        //     });
-        //     var register = RegisterRequest(
-        //         username: nameController.text.toString().trim(),
-        //         password: passwordController.text.toString().trim());
-        //     service.registerUser(register).then((value) {
-        //       Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => LoginScreen(
-        //               )));
-        //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //           content: Text("User registered successfully")));
-        //     }).onError((error, stackTrace) {
-        //       showMessage("Incorrect Credentials");
-        //       setState(() {
-        //         isLoading = false;
-        //       });
-        //     });
-        //   }
-        // },
-          child: Text("Login", style: const TextStyle(color: Colors.white)),
+        style: ElevatedButton.styleFrom(
+          shape: const StadiumBorder(),
+          backgroundColor: ColorConstant.teal800,
+          minimumSize: const Size(360, 55),
+        ),
+        child: isLoading
+            ? const CircularProgressIndicator(color: Colors.white)
+            : Text(
+          "Log In",
+          style: AppStyle.txtInterMediums18.copyWith(
+            letterSpacing: 0.72,
+          ),
+        ),
       ),
     );
+
 
     return Scaffold(
       backgroundColor: ColorConstant.whiteA700,
@@ -300,7 +292,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 padding: getPadding(bottom: 2),
                                 child: isLoading
                                     ? const CircularProgressIndicator()
-                                    : loginButton,
+                                    : login,
                               ),
                             ],
                           ),

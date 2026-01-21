@@ -107,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
 
-    final registerButton = Material(
+    final register = Material(
       child: MaterialButton(
         color: ColorConstant.teal800,
         shape: StadiumBorder(),
@@ -116,55 +116,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (_formKey.currentState!.validate()) {
             setState(() {
               isLoading = true;
-              _errorMessage = '';
             });
-
-            var registerRequest = RegisterRequest(
-              username: nameController.text.trim(),
-              password: passwordController.text.trim(),
+            var register = RegisterRequest(
+              username: nameController.text.toString().trim(),
+              password: passwordController.text.toString().trim(),
             );
-
-            try {
-              RegisterResponse response =
-              await service.registerUser(registerRequest);
-
-              setState(() {
-                isLoading = false;
-              });
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("User registered successfully"),
-                ),
-              );
-
+            service.registerUser(register).then((value) {
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
-            } catch (e) {
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LoginScreen(
+                      )));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("User registered successfully")));
+            }).onError((error, stackTrace) {
+              showMessage("Incorrect Credentials");
               setState(() {
                 isLoading = false;
               });
-
-              showMessage("Registration failed:\n$e");
-            }
+            });
           }
         },
-        child: isLoading
-            ? const SizedBox(
-          width: 24,
-          height: 24,
-          child: CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          ),
-        )
-            : const Text("Sign Up", style: TextStyle(color: Colors.white)),
+        child: Text(
+          "Sign Up",
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
-
-
 
     return SafeArea(
       child: Scaffold(
@@ -218,7 +196,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             padding: getPadding(bottom: 2),
                             child: isLoading
                                 ? const CircularProgressIndicator()
-                                : registerButton,
+                                : register,
                           ),
                         ],
                       ),
