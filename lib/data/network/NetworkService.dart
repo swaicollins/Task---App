@@ -3,6 +3,7 @@ import 'package:task/core/model/request/createTasksRequest/CreateTasksRequest.da
 import 'package:task/core/model/response/GetTasksResponse/GetTasksResponse.dart';
 import 'package:task/core/model/response/LoginResponse/LoginResponse.dart';
 import 'package:task/core/model/response/createTasksResponse/CreateTasksResponse.dart';
+import 'package:task/core/model/response/deleteTaskResponse/DeleteTaskResponse.dart';
 import '../../core/model/request/register/RegisterRequest.dart';
 import '../../core/model/request/updateTasksRequest/UpdateTaskRequest.dart';
 import '../../core/model/response/RegisterResponse/RegisterResponse.dart';
@@ -20,6 +21,7 @@ class NetworkService {
   static final createTask = BASE_URL + "/tasks";
   static final getTasksId = BASE_URL + "tasks";
   static final updateTasksId = BASE_URL + "tasks";
+  static final deleteTasks = BASE_URL + "tasks";
 
   Future<RegisterResponse> registerUser(RegisterRequest request) async {
     var uri = Uri.parse(register);
@@ -170,8 +172,26 @@ class NetworkService {
       } else {
         throw Exception("Error ${response.body}");
       }
-    } catch
-    (e) {
+    } catch (e) {
+      throw Exception("Error $e");
+    }
+  }
+
+  Future<DeleteTaskResponse> deleteTask(String token, int id) async {
+    var uri = Uri.parse("$deleteTasks/$id");
+    Map<String, String> requestHeaders = {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'authorization': token,
+    };
+    var response = await http.post(uri, headers: requestHeaders);
+    try {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return DeleteTaskResponse.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception("Error ${response.body}");
+      }
+    } catch (e) {
       throw Exception("Error $e");
     }
   }
