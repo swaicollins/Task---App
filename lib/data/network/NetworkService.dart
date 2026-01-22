@@ -184,7 +184,7 @@ class NetworkService {
       'content-type': 'application/json',
       'authorization': token,
     };
-    var response = await http.post(uri, headers: requestHeaders);
+    var response = await http.put(uri, headers: requestHeaders);
     try {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return DeleteTaskResponse.fromJson(jsonDecode(response.body));
