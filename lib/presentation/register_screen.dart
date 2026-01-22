@@ -111,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: MaterialButton(
         color: ColorConstant.teal800,
         shape: StadiumBorder(),
-        minWidth: 350,
+        // minWidth: 350,
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             setState(() {

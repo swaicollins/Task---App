@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
         style: ElevatedButton.styleFrom(
           shape: const StadiumBorder(),
           backgroundColor: ColorConstant.teal800,
-          minimumSize: const Size(360, 55),
+          // minimumSize: const Size(360, 55),
         ),
         child: isLoading
             ? const CircularProgressIndicator(color: Colors.white)
@@ -221,19 +221,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: ColorConstant.whiteA700,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new),
-          color: ColorConstant.black900,
-          onPressed: () {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const AccountScreen()));
-          },
-        ),
-        backgroundColor: ColorConstant.whiteA700,
-        shadowColor: ColorConstant.whiteA700,
-        elevation: 0.0,
-      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
