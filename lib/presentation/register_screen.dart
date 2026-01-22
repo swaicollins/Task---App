@@ -143,7 +143,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
@@ -156,54 +155,75 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: padding),
+              padding: EdgeInsets.symmetric(horizontal: getHorizontalSize(20)), // safe horizontal padding
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // Align text left
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 15),
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Create an account",
-                            style: TextStyle(
-                              color: ColorConstant.black900,
-                              fontSize: getFontSize(34),
-                              fontFamily: 'DM Sans',
-                              fontWeight: FontWeight.w700,
-                            ),
+                  SizedBox(height: getVerticalSize(15)), // top spacing
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Create an account",
+                          style: TextStyle(
+                            color: ColorConstant.black900,
+                            fontSize: getFontSize(34),
+                            fontFamily: 'DM Sans',
+                            fontWeight: FontWeight.w700,
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  SizedBox(height: getVerticalSize(45)), // spacing before name field
+                  nameField,
+                  SizedBox(height: getVerticalSize(10)), // spacing before password field
+                  passwordField,
+                  SizedBox(height: getVerticalSize(15)), // spacing before register button
+                  Center(
+                    child: isLoading
+                        ? CircularProgressIndicator()
+                        : MaterialButton(
+                      color: ColorConstant.teal800,
+                      shape: StadiumBorder(),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          var register = RegisterRequest(
+                            username: nameController.text.trim(),
+                            password: passwordController.text.trim(),
+                          );
+                          service.registerUser(register).then((value) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("User registered successfully"),
+                              ),
+                            );
+                          }).onError((error, stackTrace) {
+                            showMessage("Incorrect Credentials");
+                            setState(() {
+                              isLoading = false;
+                            });
+                          });
+                        }
+                      },
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(color: Colors.white),
                       ),
-                      textAlign: TextAlign.left,
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(top: 45), child: nameField),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: passwordField,
-                  ),
-                  Padding(
-                    padding: getPadding(top: 15),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: getPadding(bottom: 2),
-                            child: isLoading
-                                ? const CircularProgressIndicator()
-                                : register,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10),
+                  SizedBox(height: getVerticalSize(10)), // spacing before "Already have account?"
+                  Center(
                     child: TextButton(
                       child: Text(
                         "Already have an account?",
@@ -231,6 +251,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+
   }
 
   void showMessage(String message) {
