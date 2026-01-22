@@ -19,9 +19,9 @@ class NetworkService {
   static final login = BASE_URL + "/auth/login";
   static final getTask = BASE_URL + "/tasks";
   static final createTask = BASE_URL + "/tasks";
-  static final getTasksId = BASE_URL + "tasks";
-  static final updateTasksId = BASE_URL + "tasks";
-  static final deleteTasks = BASE_URL + "tasks";
+  static final getTasksId = BASE_URL + "/tasks";
+  static final updateTasksId = BASE_URL + "/tasks";
+  static final deleteTasks = BASE_URL + "/tasks";
 
   Future<RegisterResponse> registerUser(RegisterRequest request) async {
     var uri = Uri.parse(register);
