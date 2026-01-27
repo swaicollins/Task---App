@@ -2,7 +2,7 @@ name: Flutter
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master" ] # or "main"
   pull_request:
     branches: [ "master" ]
 
@@ -13,14 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Install Flutter (includes Dart)
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          cache: true
-
-      - name: Flutter version
-        run: flutter --version
 
       - name: Install dependencies
         run: flutter pub get
@@ -28,6 +23,5 @@ jobs:
       - name: Analyze project source
         run: flutter analyze
 
-      # Optional but recommended
       - name: Run tests
         run: flutter test
